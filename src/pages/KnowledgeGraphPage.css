@@ -1,0 +1,426 @@
+/* =======================================================
+   KnowledgeGraphPage — 国风写意水墨画卷与草药印章可视化样式
+   ======================================================= */
+
+.kg-page {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  height: calc(100vh - var(--header-height));
+  box-sizing: border-box;
+  background: #eae1c4; /* 宣纸装裱绢布黄背景 */
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Sidebar & Details Panel ===== */
+.kg-sidebar {
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex-shrink: 0;
+  height: 100%;
+}
+
+/* Search Form (古风红黑竹简输入框) */
+.kg-search-form {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.kg-search-input {
+  flex: 1;
+  font-size: 13.5px;
+  background: #fbf9f3;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  border-radius: 2px;
+  padding: 10px 14px;
+  color: #2c1d11;
+  outline: none;
+  font-family: "Microsoft YaHei", sans-serif;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 5px rgba(139, 69, 19, 0.05);
+}
+
+.kg-search-input::placeholder {
+  color: rgba(139, 69, 19, 0.6);
+  opacity: 1;
+}
+
+.kg-search-input:focus {
+  border-color: #a63a3a; /* 朱砂红 */
+  background: #ffffff;
+  box-shadow: inset 0 2px 5px rgba(166, 58, 58, 0.05), 0 0 8px rgba(166, 58, 58, 0.15);
+}
+
+.kg-search-btn {
+  white-space: nowrap;
+  padding: 10px 18px;
+  font-size: 13.5px;
+  background: linear-gradient(135deg, #a63a3a, #851c1c); /* 朱砂漆泥 */
+  border: 1px solid #851c1c;
+  border-radius: 2px;
+  color: #ffffff;
+  font-family: "KaiTi", "STKaiti", serif;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(166, 58, 58, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.kg-search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(166, 58, 58, 0.45);
+  background: #a63a3a;
+}
+
+/* Detail Panel (药方笺风格，红框白纸) */
+.detail-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  background: #fdfbf7; /* 白宣纸底 */
+  border: 1.5px solid rgba(139, 69, 19, 0.35); /* 竹木边框 */
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06), inset 0 0 20px rgba(139, 69, 19, 0.02);
+  position: relative;
+}
+
+/* 宣纸卡片小装饰线（仿药柜刻纹） */
+.detail-panel::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 1px solid rgba(166, 58, 58, 0.12); /* 内部细细的朱丝栏 */
+  pointer-events: none;
+}
+
+.detail-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.detail-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+}
+.detail-panel::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.2);
+  border-radius: 2px;
+}
+.detail-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.4);
+}
+
+.empty-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xl);
+  color: #3e2815; /* 调深以防在浅黄背景上看不清 */
+  border: 1px dashed rgba(139, 69, 19, 0.25);
+  background: rgba(251, 249, 243, 0.6);
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 1.8;
+  font-family: "KaiTi", "STKaiti", serif;
+}
+
+.panel-header {
+  border-bottom: 1.5px solid rgba(166, 58, 58, 0.2);
+  padding-bottom: var(--space-sm);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.panel-title {
+  font-family: "KaiTi", "STKaiti", "SimSun", serif;
+  font-size: 26px; /* 增大标题 */
+  font-weight: bold;
+  color: #1a0f08; /* 浓墨黑 */
+  margin-top: var(--space-xs);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.panel-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  z-index: 1;
+}
+
+.detail-row {
+  display: flex;
+  font-size: 14px; /* 调大字体到 14px */
+  line-height: 1.6;
+}
+
+.detail-label {
+  color: #543c25; /* 调深：深红木褐，提高和宣纸浅黄背景的对比度 */
+  font-family: "KaiTi", "STKaiti", serif;
+  font-weight: bold;
+  width: 90px; /* 随字体调宽标签宽度 */
+  flex-shrink: 0;
+}
+
+.detail-value {
+  color: #2c1a0e;
+  font-weight: 500;
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.section-title {
+  font-family: "KaiTi", "STKaiti", serif;
+  font-size: 14px; /* 调大字体 */
+  font-weight: bold;
+  color: #a63a3a; /* 朱砂红 */
+  border-left: 3px solid #a63a3a;
+  padding-left: var(--space-xs);
+}
+
+.section-content {
+  font-size: 13px; /* 调大内容字体 */
+  line-height: 1.65;
+  color: #3e2d1d;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* 挂签式标签样式 */
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 11px; /* 调大标签字号 */
+  font-weight: bold;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "KaiTi", "STKaiti", serif;
+}
+.tag-cinnabar {
+  background: rgba(184, 48, 48, 0.1);
+  border: 1px solid #b83030;
+  color: #b83030;
+}
+.tag-jade {
+  background: rgba(45, 99, 69, 0.1);
+  border: 1px solid #2d6345;
+  color: #2d6345;
+}
+.tag-gold {
+  background: rgba(176, 128, 40, 0.1);
+  border: 1px solid #b08028;
+  color: #b08028;
+}
+.tag-indigo {
+  background: rgba(36, 83, 102, 0.1);
+  border: 1px solid #245366;
+  color: #245366;
+}
+
+/* 国风矿物特特色彩色泽 */
+.text-glow-green {
+  color: #2d6345 !important;
+  font-weight: bold;
+}
+
+.text-glow-red {
+  color: #b83030 !important;
+  font-weight: bold;
+}
+
+.text-glow-gold {
+  color: #b08028 !important;
+  font-weight: bold;
+}
+
+.text-italic {
+  font-style: italic;
+  color: #634b35;
+}
+
+.text-muted {
+  color: #4a3828; /* 调深以增强对比 */
+}
+
+/* ===== Canvas 主容器 ===== */
+.kg-canvas-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f3edd8; /* 宣纸淡黄底 */
+  border: 1.5px solid rgba(139, 69, 19, 0.35); /* 红木画卷框 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(139, 69, 19, 0.04);
+  border-radius: 2px;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+
+/* 画布微型暗纹格栅背景 (朱丝栏纵格) */
+.kg-canvas-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(90deg, rgba(166, 48, 48, 0.012) 1px, transparent 1px);
+  background-size: 30px 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.canvas-header {
+  padding: 14px 20px;
+  border-bottom: 1.5px solid rgba(139, 69, 19, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fdfaf2; /* 淡淡的象牙纸白 */
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.canvas-title {
+  font-family: "KaiTi", "STKaiti", "SimSun", serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #3e230f; /* 墨汁黑褐 */
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+.canvas-legend {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 13px; /* 调大图例字号 */
+  color: #5c4533;
+  font-family: "KaiTi", "STKaiti", serif;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 2px currentColor;
+}
+
+/* 矿物印泥图例 */
+.dot-presc { color: #b83030; background: #b83030; }
+.dot-herb { color: #2d6345; background: #2d6345; }
+.dot-synd { color: #b08028; background: #b08028; }
+.dot-symp { color: #245366; background: #245366; }
+.dot-meri { color: #752a57; background: #752a57; }
+
+/* HUD 悬浮指示栏 */
+.canvas-hud {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hud-instructions {
+  background: rgba(253, 251, 247, 0.95);
+  border: 1px solid rgba(139, 69, 19, 0.2);
+  padding: 6px 14px;
+  border-radius: 2px;
+  font-size: 12px; /* 调大字号 */
+  font-family: "KaiTi", "STKaiti", serif;
+  color: #4c321c;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.hud-reset-btn {
+  pointer-events: auto;
+  background: #fdfbf7;
+  border: 1px solid rgba(166, 48, 48, 0.5);
+  color: #a63a3a;
+  padding: 6px 14px;
+  border-radius: 2px;
+  font-size: 12px; /* 调大字号 */
+  font-family: "KaiTi", "STKaiti", serif;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.hud-reset-btn:hover {
+  background: #a63a3a;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(166, 48, 48, 0.25);
+  transform: scale(1.03);
+}
+
+.kg-canvas {
+  flex: 1;
+  display: block;
+  z-index: 1;
+  cursor: default;
+}
+
+/* ===== Loading & Error states ===== */
+.kg-loading,
+.kg-error {
+  height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  background: #eae1c4;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(139, 69, 19, 0.1);
+  border-top-color: #a63a3a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 10px rgba(166, 48, 48, 0.1);
+}
+
+.loading-text {
+  font-family: "KaiTi", "STKaiti", serif;
+  color: #3e230f;
+  font-size: var(--text-md);
+  text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+.error-text {
+  color: #b83030;
+  font-family: "KaiTi", "STKaiti", serif;
+  font-size: var(--text-md);
+  text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

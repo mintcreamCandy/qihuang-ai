@@ -1,0 +1,336 @@
+/* ============================================
+   PrescriptionLibrary — 经典方剂
+   ============================================ */
+
+/* Header */
+.pres-header-section {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
+  position: relative;
+}
+
+.pres-header-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(184, 134, 11, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, rgba(200, 75, 49, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.pres-page-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  position: relative;
+  letter-spacing: 0.05em;
+}
+
+.pres-page-subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+  letter-spacing: 0.1em;
+  position: relative;
+}
+
+/* Controls */
+.pres-controls {
+  margin-bottom: var(--space-lg);
+}
+
+.pres-search {
+  position: relative;
+  margin-bottom: var(--space-lg);
+}
+
+.pres-search .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-base);
+  z-index: 1;
+}
+
+.pres-search .search-input {
+  padding-left: 42px;
+}
+
+/* Source Chips */
+.pres-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.source-chip {
+  padding: 6px 16px;
+  font-size: var(--text-sm);
+  font-family: var(--font-heading);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.source-chip:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+.source-chip.active {
+  background: rgba(184, 134, 11, 0.15);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+/* Status Row */
+.pres-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.pres-results-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.pres-results-count strong {
+  color: var(--color-gold-light);
+}
+
+.pres-loading-spinner {
+  font-size: var(--text-sm);
+  color: var(--color-gold-light);
+  font-family: var(--font-heading);
+}
+
+/* ===== Prescription Grid ===== */
+.pres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  padding-bottom: var(--space-3xl);
+}
+
+/* Prescription Card */
+.pres-card {
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+}
+
+.pres-card:hover {
+  transform: translateY(-4px);
+}
+
+.pres-card-body {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pres-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.pres-card-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+}
+
+.pres-card-pinyin {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+  font-style: italic;
+}
+
+.pres-card-section {
+  margin-bottom: var(--space-md);
+}
+
+.pres-card-section:last-child {
+  margin-bottom: 0;
+}
+
+.pres-card-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  color: var(--color-gold-light);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pres-card-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.pres-card-composition {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Empty State */
+.pres-empty {
+  text-align: center;
+  padding: var(--space-4xl);
+  color: var(--color-text-muted);
+}
+
+.pres-empty p {
+  margin-bottom: var(--space-lg);
+}
+
+/* ===== Detail Modal ===== */
+.pres-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: var(--space-xl);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.pres-modal {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideUp 0.3s ease-out;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Modal Body */
+.pres-modal .modal-body {
+  padding: var(--space-2xl);
+}
+
+.pres-modal .modal-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xl);
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: var(--space-md);
+}
+
+.pres-modal .modal-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  color: var(--color-text-primary);
+}
+
+.pres-modal .modal-pinyin {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  flex: 1;
+}
+
+/* Composition Badge Styling */
+.composition-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.composition-badge {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-heading);
+}
+
+.comp-herb {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.comp-dosage {
+  color: var(--color-gold-light);
+  margin-left: 8px;
+  font-size: var(--text-sm);
+}
+
+/* Modal Sections */
+.pres-modal .modal-section {
+  margin-bottom: var(--space-xl);
+}
+
+.pres-modal .modal-section:last-child {
+  margin-bottom: 0;
+}
+
+.pres-modal .modal-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  color: var(--color-gold-light);
+  margin-bottom: var(--space-sm);
+  border-left: 2px solid var(--color-gold);
+  padding-left: 8px;
+}
+
+.pres-modal .modal-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+/* Warning Section */
+.pres-modal .modal-warning {
+  padding: var(--space-md);
+  background: rgba(200, 75, 49, 0.05);
+  border: 1px solid rgba(200, 75, 49, 0.15);
+  border-radius: var(--radius-sm);
+}
+
+.pres-modal .modal-warning .modal-label {
+  color: var(--color-cinnabar);
+  border-left-color: var(--color-cinnabar);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .pres-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pres-modal {
+    max-height: 90vh;
+    border-radius: var(--radius-md);
+  }
+
+  .pres-modal-overlay {
+    padding: var(--space-md);
+  }
+}

@@ -1,0 +1,423 @@
+/* ============================================
+   HerbLibrary — 本草百科
+   ============================================ */
+
+/* Header */
+.herb-header-section {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
+  position: relative;
+}
+
+.herb-header-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 40% 50%, rgba(46, 139, 87, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 60% 30%, rgba(184, 134, 11, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.herb-page-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  position: relative;
+}
+
+.herb-page-subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+  letter-spacing: 0.1em;
+  position: relative;
+}
+
+/* Controls */
+.herb-controls {
+  margin-bottom: var(--space-lg);
+}
+
+.herb-search {
+  position: relative;
+  margin-bottom: var(--space-lg);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-base);
+  z-index: 1;
+}
+
+.herb-search .search-input {
+  padding-left: 42px;
+}
+
+/* Category Chips */
+.herb-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.category-chip {
+  padding: 6px 16px;
+  font-size: var(--text-sm);
+  font-family: var(--font-heading);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.category-chip:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+.category-chip.active {
+  background: rgba(184, 134, 11, 0.15);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+/* Results Count */
+.herb-results-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xl);
+}
+
+.herb-results-count strong {
+  color: var(--color-gold-light);
+}
+
+/* ===== Herb Grid ===== */
+.herb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-xl);
+  padding-bottom: var(--space-3xl);
+}
+
+/* Herb Card */
+.herb-card {
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+}
+
+.herb-card:hover {
+  transform: translateY(-4px);
+}
+
+.herb-card-image {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background: var(--color-bg-card);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.herb-card-image img {
+  width: auto;
+  height: 90%;
+  max-width: 90%;
+  object-fit: contain;
+  transition: var(--transition-slow);
+  mix-blend-mode: lighten;
+}
+
+.herb-card:hover .herb-card-image img {
+  transform: scale(1.08);
+}
+
+.herb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-card));
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  opacity: 0.3;
+}
+
+.herb-card-info {
+  padding: var(--space-lg);
+}
+
+.herb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.herb-card-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+}
+
+.herb-card-pinyin {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+  font-style: italic;
+}
+
+.herb-card-function {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.herb-card-meridians {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.meridian-tag {
+  padding: 2px 8px;
+  font-size: var(--text-xs);
+  color: var(--color-jade);
+  background: rgba(46, 139, 87, 0.1);
+  border: 1px solid rgba(46, 139, 87, 0.2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+}
+
+/* Empty State */
+.herb-empty {
+  text-align: center;
+  padding: var(--space-4xl);
+  color: var(--color-text-muted);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
+}
+
+.herb-empty p {
+  margin-bottom: var(--space-lg);
+}
+
+/* ===== Detail Modal ===== */
+.herb-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: var(--space-xl);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.herb-modal {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideUp 0.3s ease-out;
+  box-shadow: var(--shadow-lg);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: rgba(200, 75, 49, 0.8);
+}
+
+/* Modal Hero */
+.modal-hero {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: var(--color-bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-image {
+  width: auto;
+  height: 90%;
+  max-width: 90%;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+}
+
+.modal-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.2;
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-card));
+}
+
+/* Modal Body */
+.modal-body {
+  padding: var(--space-xl);
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+
+.modal-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+}
+
+.modal-pinyin {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.modal-latin {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+/* Modal Sections */
+.modal-section {
+  margin-bottom: var(--space-lg);
+}
+
+.modal-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  color: var(--color-gold-light);
+  margin-bottom: var(--space-xs);
+}
+
+.modal-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.classic-ref {
+  color: var(--color-gold-light);
+  font-style: italic;
+}
+
+.modal-meridians {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.meridian-badge {
+  padding: 4px 14px;
+  font-size: var(--text-sm);
+  color: var(--color-jade);
+  background: rgba(46, 139, 87, 0.1);
+  border: 1px solid rgba(46, 139, 87, 0.25);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+}
+
+/* Warning Section */
+.modal-warning {
+  padding: var(--space-md);
+  background: rgba(200, 75, 49, 0.05);
+  border: 1px solid rgba(200, 75, 49, 0.15);
+  border-radius: var(--radius-sm);
+}
+
+.modal-warning .modal-label {
+  color: var(--color-cinnabar);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .herb-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .herb-modal {
+    max-height: 90vh;
+    border-radius: var(--radius-md);
+  }
+
+  .herb-modal-overlay {
+    padding: var(--space-md);
+  }
+
+  .modal-hero {
+    height: 140px;
+  }
+}
