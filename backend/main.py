@@ -12,44 +12,6 @@ from app.core.database import engine, SessionLocal
 # 自动创建 SQLite 数据库表 (如果已存在则不会重新创建)
 models.Base.metadata.create_all(bind=engine)
 
-# SQLite 数据库表结构动态迁移 (为 users 表增加 is_admin 字段)
-db_migration = SessionLocal()
-try:
-    # 检查 users 表是否包含 is_admin 字段
-    cursor = db_migration.execute(text("PRAGMA table_info(users)"))
-    columns = [row[1] for row in cursor.fetchall()]
-    if "is_admin" not in columns:
-        print("[DB] users 表中检测到缺失 is_admin 字段，正在执行动态迁移...")
-        db_migration.execute(text("ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT 0"))
-        db_migration.commit()
-        print("[DB] users 表 is_admin 字段迁移成功！")
-        
-    # 初始化默认超级管理员账户
-    admin_email = "admin@qihuang.com"
-    from app.core import auth  # 导入 auth 模块进行密码哈希
-    admin_user = db_migration.query(models.User).filter(models.User.email == admin_email).first()
-    if not admin_user:
-        print("[DB] 超级管理员账号不存在，正在创建默认管理员...")
-        hashed_password = auth.get_password_hash("admin123")
-        new_admin = models.User(
-            email=admin_email,
-            hashed_password=hashed_password,
-            name="超级管理员",
-            is_admin=True
-        )
-        db_migration.add(new_admin)
-        db_migration.commit()
-        db_migration.refresh(new_admin)
-        
-        # 为超级管理员初始化空白健康画像 (Profile)
-        new_profile = models.Profile(user_id=new_admin.id)
-        db_migration.add(new_profile)
-        db_migration.commit()
-        print("[DB] 默认管理员创建成功: admin@qihuang.com / admin123")
-except Exception as e:
-    print(f"[DB] 数据库迁移或初始化管理员失败: {e}")
-finally:
-    db_migration.close()
 
 # 确保把当前路径放入 sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

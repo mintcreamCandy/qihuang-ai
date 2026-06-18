@@ -459,6 +459,30 @@ def seed_database():
         db.add(db_prescription)
 
     db.commit()
+
+    # 3. 初始化默认超级管理员账户
+    print("初始化默认超级管理员账户...")
+    admin_email = "admin@qihuang.com"
+    from app.core import auth  # 导入 auth 模块进行密码哈希
+    admin_user = db.query(models.User).filter(models.User.email == admin_email).first()
+    if not admin_user:
+        hashed_password = auth.get_password_hash("admin123")
+        new_admin = models.User(
+            email=admin_email,
+            hashed_password=hashed_password,
+            name="超级管理员",
+            is_admin=True
+        )
+        db.add(new_admin)
+        db.commit()
+        db.refresh(new_admin)
+        
+        # 为超级管理员初始化空白健康画像 (Profile)
+        new_profile = models.Profile(user_id=new_admin.id)
+        db.add(new_profile)
+        db.commit()
+        print("默认超级管理员创建成功: admin@qihuang.com / admin123")
+
     db.close()
     print("数据库种子数据初始化成功！")
 
