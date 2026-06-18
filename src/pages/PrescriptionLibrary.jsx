@@ -47,17 +47,17 @@ function PrescriptionLibrary() {
         source: activeSource === '全部' ? undefined : activeSource,
         search: searchQuery
       })
-      .then(data => {
-        setPrescriptions(data)
-        setError(null)
-      })
-      .catch(err => {
-        console.error(err)
-        setError(err.message || '获取方剂数据失败，请重试')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+        .then(data => {
+          setPrescriptions(data)
+          setError(null)
+        })
+        .catch(err => {
+          console.error(err)
+          setError(err.message || '获取方剂数据失败，请重试')
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     }, searchQuery ? 300 : 0)
 
     return () => clearTimeout(delayDebounceFn)
@@ -151,8 +151,8 @@ function PrescriptionLibrary() {
         <div className="pres-controls animate-fade-in-up delay-2" id="pres-controls">
           {user?.is_admin && (
             <div className="admin-actions-bar">
-              <button 
-                className="btn btn-gold btn-admin-add" 
+              <button
+                className="btn btn-gold btn-admin-add"
                 onClick={() => {
                   setFormMode('create');
                   setFormData(defaultFormData);
@@ -216,7 +216,7 @@ function PrescriptionLibrary() {
                   <span className="tag tag-gold">{pres.source}</span>
                 </div>
                 <p className="pres-card-pinyin">{pres.pinyin}</p>
-                
+
                 <div className="pres-card-section">
                   <span className="pres-card-label">功用</span>
                   <p className="pres-card-text">{pres.functions}</p>
@@ -308,11 +308,11 @@ function PrescriptionLibrary() {
 
               {user?.is_admin && (
                 <div className="modal-admin-actions" style={{ display: 'flex', gap: 'var(--space-md)', marginTop: 'var(--space-xl)', borderTop: '1px solid var(--color-border)', paddingTop: 'var(--space-lg)' }}>
-                  <button 
-                    className="btn btn-outline btn-edit" 
+                  <button
+                    className="btn btn-outline btn-edit"
                     onClick={() => {
                       setFormMode('edit');
-                      const compositionArray = selectedPrescription.composition 
+                      const compositionArray = selectedPrescription.composition
                         ? Object.entries(selectedPrescription.composition).map(([herb, dosage]) => ({ herb, dosage }))
                         : [{ herb: '', dosage: '' }];
                       setFormData({
@@ -329,13 +329,14 @@ function PrescriptionLibrary() {
                         contraindications: selectedPrescription.contraindications || ''
                       });
                       setFormError(null);
+                      setSelectedPrescription(null);
                       setIsFormOpen(true);
                     }}
                   >
                     📝 编辑此方
                   </button>
-                  <button 
-                    className="btn btn-danger btn-delete" 
+                  <button
+                    className="btn btn-danger btn-delete"
                     style={{ background: 'var(--color-cinnabar)', color: 'white', borderColor: 'var(--color-cinnabar)' }}
                     onClick={() => handleDeletePrescription(selectedPrescription.id)}
                   >
@@ -353,7 +354,7 @@ function PrescriptionLibrary() {
         <div className="pres-modal-overlay form-modal-overlay" onClick={() => setIsFormOpen(false)} style={{ zIndex: 1010 }}>
           <div className="pres-modal form-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', width: '90%' }}>
             <button className="modal-close" onClick={() => setIsFormOpen(false)}>✕</button>
-            
+
             <div className="modal-body" style={{ maxHeight: '80vh', overflowY: 'auto', padding: 'var(--space-xl)' }}>
               <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-gold-light)', marginBottom: 'var(--space-lg)', borderBottom: '2px solid rgba(184, 134, 11, 0.2)', paddingBottom: 'var(--space-sm)' }}>
                 {formMode === 'create' ? '📜 新增方剂' : '📝 编辑方剂'}
@@ -367,7 +368,7 @@ function PrescriptionLibrary() {
 
               <form onSubmit={handleFormSubmit} className="admin-form">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                  
+
                   {/* ID */}
                   <div className="form-group">
                     <label style={{ display: 'block', marginBottom: '6px', fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontWeight: 'bold' }}>方剂拼音ID (拼音横线分隔，作为数据库主键且不可修改)*</label>
@@ -443,7 +444,7 @@ function PrescriptionLibrary() {
                 {/* Composition Key-Values */}
                 <div className="form-group" style={{ marginBottom: 'var(--space-md)' }}>
                   <label style={{ display: 'block', marginBottom: '6px', fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontWeight: 'bold' }}>方剂组成配伍 (中药名及用量)*</label>
-                  
+
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', marginBottom: 'var(--space-sm)' }}>
                     {formData.composition.map((item, idx) => (
                       <div key={idx} style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>

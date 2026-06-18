@@ -181,7 +181,7 @@
   gap: var(--space-xs);
 }
 
-.section-title {
+.kg-page .section-title {
   font-family: "KaiTi", "STKaiti", serif;
   font-size: 14px; /* 调大字体 */
   font-weight: bold;
@@ -190,7 +190,7 @@
   padding-left: var(--space-xs);
 }
 
-.section-content {
+.kg-page .section-content {
   font-size: 13px; /* 调大内容字体 */
   line-height: 1.65;
   color: #3e2d1d;
@@ -198,7 +198,7 @@
 }
 
 /* 挂签式标签样式 */
-.tag {
+.kg-page .tag {
   display: inline-block;
   padding: 3px 8px;
   font-size: 11px; /* 调大标签字号 */
@@ -208,22 +208,22 @@
   letter-spacing: 0.05em;
   font-family: "KaiTi", "STKaiti", serif;
 }
-.tag-cinnabar {
+.kg-page .tag-cinnabar {
   background: rgba(184, 48, 48, 0.1);
   border: 1px solid #b83030;
   color: #b83030;
 }
-.tag-jade {
+.kg-page .tag-jade {
   background: rgba(45, 99, 69, 0.1);
   border: 1px solid #2d6345;
   color: #2d6345;
 }
-.tag-gold {
+.kg-page .tag-gold {
   background: rgba(176, 128, 40, 0.1);
   border: 1px solid #b08028;
   color: #b08028;
 }
-.tag-indigo {
+.kg-page .tag-indigo {
   background: rgba(36, 83, 102, 0.1);
   border: 1px solid #245366;
   color: #245366;

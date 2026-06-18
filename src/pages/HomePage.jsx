@@ -7,15 +7,40 @@ function HomePage() {
   const { user } = useContext(AuthContext)
   const profile = user?.profile || {}
 
-  /* 体质雷达数据 */
-  const radarData = [
-    { label: '气', value: 30, color: 'var(--color-jade)' },
-    { label: '血', value: 55, color: 'var(--color-cinnabar)' },
-    { label: '阴', value: 65, color: 'var(--color-gold)' },
-    { label: '阳', value: 50, color: 'var(--color-cinnabar)' },
-    { label: '精', value: 70, color: 'var(--color-jade)' },
-    { label: '神', value: 60, color: 'var(--color-gold-light)' },
-  ]
+  /* 体质剖析简介 */
+  const constitutionBriefs = {
+    '平和质': '阴阳气血调和，体态适中，面色红润，精力充沛，对外界环境适应力强。',
+    '气虚质': '元气不足，极易疲倦，少气懒言，易出汗，对风寒等邪气抵抗力较弱。',
+    '阳虚质': '阳气不足，畏寒怕冷，四肢不温，喜热饮食，精神不振。',
+    '阴虚质': '阴液亏少，手足心热，口干咽燥，易潮热盗汗，性情较急躁。',
+    '痰湿质': '痰湿凝聚，体形肥胖，腹部松软，面部油脂多，舌苔厚腻。',
+    '湿热质': '湿热内蕴，面部易生痤疮、粉刺，口苦口臭，身重困倦，大便粘滞。',
+    '血瘀质': '血行不畅，面色晦暗，皮肤干燥，容易出现瘀斑，舌暗或有瘀点。',
+    '气郁质': '气机郁滞，性情急躁或忧郁寡欢，胸胁胀满，常叹气。',
+    '特禀质': '先天遗传或过敏体质，易对花粉、尘螨等物质过敏。'
+  }
+
+  // 动态合并混合体质简介
+  const getConstitutionBrief = (constName) => {
+    if (!constName || constName === '未测试') {
+      return '您尚未完成中医体质测评，完成测评后将在此呈现详细画像与调护策略。'
+    }
+    if (constitutionBriefs[constName]) {
+      return constitutionBriefs[constName]
+    }
+    // 混合体质，如：气虚质兼阳虚质
+    const parts = constName.split('兼')
+    const briefs = parts.map(p => constitutionBriefs[p]).filter(Boolean)
+    if (briefs.length > 0) {
+      return `混合体质表现：${briefs.join(' ')}`
+    }
+    return '您已完成体质辨证，日常调理宜温和协调，补偏救弊。'
+  }
+
+  // 过滤特征标签，避免将“气虚质兼阳虚质”等体质名渲染在“身体征候”中
+  const symptomTags = (profile.characteristics || []).filter(
+    char => char !== profile.constitution && !char.includes('质')
+  )
 
   /* 每日推荐数据 */
   const recommendations = [
@@ -80,48 +105,62 @@ function HomePage() {
         {/* ===== Profile Summary ===== */}
         <section className="home-profile animate-fade-in-up delay-2" id="profile-summary">
           <div className="card profile-card">
-            <div className="profile-avatar">{user?.name?.charAt(0) || '用'}</div>
-            <div className="profile-info">
-              <p className="profile-greeting">
-                晚上好，<strong>{user?.name || '用户'}</strong>
-              </p>
-              <p className="profile-constitution">
-                体质类型：<span className="constitution-type">{profile.constitution || '未测试'}</span>
-              </p>
-
-              {/* 体质五行状态网格 */}
-              <div className="constitution-status-grid">
-                {radarData.map((item) => (
-                  <div key={item.label} className="status-item">
-                    <div className="status-header">
-                      <span className="status-label">{item.label}</span>
-                      <span className="status-value">{item.value}%</span>
-                    </div>
-                    <div className="status-track">
-                      <div
-                        className="status-fill"
-                        style={{
-                          width: `${item.value}%`,
-                          background: `linear-gradient(to right, ${item.color}88, ${item.color})`,
-                          boxShadow: `0 0 6px ${item.color}44`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
+            
+            {/* Zone 1: User Info */}
+            <div className="profile-identity">
+              <div className="profile-avatar">{user?.name?.charAt(0) || '用'}</div>
+              <div className="profile-meta">
+                <p className="profile-greeting">
+                  您好，<strong>{user?.name || '用户'}</strong>
+                </p>
+                <p className="profile-sub-meta">
+                  {profile.gender && <span>{profile.gender}</span>}
+                  {profile.age && <span> · {profile.age} 岁</span>}
+                </p>
               </div>
-
-              {/* 体质特征标签 */}
-              <div className="profile-tags">
-                {(profile.characteristics || []).map((char) => (
-                  <span key={char} className="tag tag-gold">{char}</span>
-                ))}
-              </div>
-
-              <Link to="/profile" className="profile-link" id="view-profile-link">
-                查看详细画像 <span className="profile-link-arrow">→</span>
-              </Link>
             </div>
+
+            {/* Divider 1 */}
+            <div className="profile-card-divider" />
+            
+            {/* Zone 2: TCM Stamp */}
+            <div className="profile-seal-zone">
+              <div className="constitution-seal">
+                <span className="seal-text-small">岐黄辨证</span>
+                <span className="seal-text-large">{profile.constitution || '未测评'}</span>
+              </div>
+            </div>
+
+            {/* Divider 2 */}
+            <div className="profile-card-divider" />
+
+            {/* Zone 3: Health Insights */}
+            <div className="profile-insights">
+              <div className="insight-section">
+                <h4 className="insight-label">体质剖析</h4>
+                <p className="insight-value">
+                  {getConstitutionBrief(profile.constitution)}
+                </p>
+              </div>
+
+              {symptomTags.length > 0 && (
+                <div className="insight-section">
+                  <h4 className="insight-label">身体征候</h4>
+                  <div className="profile-tags">
+                    {symptomTags.map((char) => (
+                      <span key={char} className="tag tag-gold">{char}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="profile-action-row">
+                <Link to="/profile" className="profile-link" id="view-profile-link">
+                  进行体质测评 & 调整档案 <span className="profile-link-arrow">→</span>
+                </Link>
+              </div>
+            </div>
+            
           </div>
         </section>
 

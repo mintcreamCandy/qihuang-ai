@@ -42,7 +42,7 @@ function HerbLibrary() {
   const [activeCategory, setActiveCategory] = useState('全部');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedHerb, setSelectedHerb] = useState(null);
-  
+
   const [herbs, setHerbs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -63,17 +63,17 @@ function HerbLibrary() {
         category: activeCategory,
         search: searchQuery
       })
-      .then(data => {
-        setHerbs(data)
-        setError(null)
-      })
-      .catch(err => {
-        console.error(err)
-        setError(err.message || '获取本草数据失败，请重试')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+        .then(data => {
+          setHerbs(data)
+          setError(null)
+        })
+        .catch(err => {
+          console.error(err)
+          setError(err.message || '获取本草数据失败，请重试')
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     }, searchQuery ? 300 : 0) // 输入时防抖 300ms，切换分类时立即请求
 
     return () => clearTimeout(delayDebounceFn)
@@ -140,8 +140,8 @@ function HerbLibrary() {
         <div className="herb-controls animate-fade-in-up delay-2" id="herb-controls">
           {user?.is_admin && (
             <div className="admin-actions-bar">
-              <button 
-                className="btn btn-gold btn-admin-add" 
+              <button
+                className="btn btn-gold btn-admin-add"
                 onClick={() => {
                   setFormMode('create');
                   setFormData(defaultFormData);
@@ -305,8 +305,8 @@ function HerbLibrary() {
 
               {user?.is_admin && (
                 <div className="modal-admin-actions" style={{ display: 'flex', gap: 'var(--space-md)', marginTop: 'var(--space-xl)', borderTop: '1px solid var(--color-border)', paddingTop: 'var(--space-lg)' }}>
-                  <button 
-                    className="btn btn-outline btn-edit" 
+                  <button
+                    className="btn btn-outline btn-edit"
                     onClick={() => {
                       setFormMode('edit');
                       setFormData({
@@ -327,13 +327,14 @@ function HerbLibrary() {
                         image: selectedHerb.image || ''
                       });
                       setFormError(null);
+                      setSelectedHerb(null);
                       setIsFormOpen(true);
                     }}
                   >
                     📝 编辑此药
                   </button>
-                  <button 
-                    className="btn btn-danger btn-delete" 
+                  <button
+                    className="btn btn-danger btn-delete"
                     style={{ background: 'var(--color-cinnabar)', color: 'white', borderColor: 'var(--color-cinnabar)' }}
                     onClick={() => handleDeleteHerb(selectedHerb.id)}
                   >
@@ -351,7 +352,7 @@ function HerbLibrary() {
         <div className="herb-modal-overlay form-modal-overlay" onClick={() => setIsFormOpen(false)} style={{ zIndex: 1010 }}>
           <div className="herb-modal form-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', width: '90%' }}>
             <button className="modal-close" onClick={() => setIsFormOpen(false)}>✕</button>
-            
+
             <div className="modal-body" style={{ maxHeight: '80vh', overflowY: 'auto', padding: 'var(--space-xl)' }}>
               <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-gold-light)', marginBottom: 'var(--space-lg)', borderBottom: '2px solid rgba(184, 134, 11, 0.2)', paddingBottom: 'var(--space-sm)' }}>
                 {formMode === 'create' ? '🌿 新增中药材' : '📝 编辑中药材'}
@@ -365,7 +366,7 @@ function HerbLibrary() {
 
               <form onSubmit={handleFormSubmit} className="admin-form">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                  
+
                   {/* ID */}
                   <div className="form-group">
                     <label style={{ display: 'block', marginBottom: '6px', fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontWeight: 'bold' }}>药材拼音ID (英文，作为数据库主键且不可修改)*</label>
