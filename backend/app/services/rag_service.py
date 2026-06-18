@@ -178,8 +178,7 @@ class RAGService:
             
         with self.lock:
             # 1. 稠密向量库增量插入 (ChromaDB)
-            query_prefix = "为这个句子寻找相关文章："
-            embedding = self.model.encode(query_prefix + content, normalize_embeddings=True).tolist()
+            embedding = self.model.encode(content, normalize_embeddings=True).tolist()
             try:
                 self.collection.add(
                     ids=[doc_id],
@@ -216,8 +215,7 @@ class RAGService:
 
         with self.lock:
             # 1. 稠密向量库更新 (ChromaDB upsert)
-            query_prefix = "为这个句子寻找相关文章："
-            embedding = self.model.encode(query_prefix + content, normalize_embeddings=True).tolist()
+            embedding = self.model.encode(content, normalize_embeddings=True).tolist()
             try:
                 self.collection.upsert(
                     ids=[doc_id],
