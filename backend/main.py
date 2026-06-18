@@ -2,6 +2,9 @@ import datetime
 import os
 import sys
 
+# 优先设置 Hugging Face 镜像源以加速模型加载并防超时
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text

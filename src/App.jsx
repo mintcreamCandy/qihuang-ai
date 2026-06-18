@@ -55,41 +55,14 @@ function App() {
     localStorage.removeItem('qihuang_token')
   }
 
-  // 体验模式：生成 Mock 数据供无账号预览
-  const demoLogin = () => {
-    const demoUserData = {
-      id: 1,
-      name: '体验账号',
-      email: 'demo@qihuang.com',
-      avatar: null,
-      profile: {
-        constitution: '平和质',
-        gender: '男',
-        age: '30',
-        characteristics: ['精力充沛', '睡眠良好', '面色红润'],
-      }
-    }
-    setUser(demoUserData)
-    setIsAuthenticated(true)
-  }
-
   // 更新用户健康画像
   const updateUserProfile = async (profileData) => {
     try {
-      // 如果不是体验账号，调用后端 API 更新
-      if (user.email !== 'demo@qihuang.com') {
-        const updatedProfile = await apiService.updateProfile(profileData)
-        setUser(prev => ({
-          ...prev,
-          profile: updatedProfile
-        }))
-      } else {
-        // 体验账户只更新本地状态
-        setUser(prev => ({
-          ...prev,
-          profile: { ...prev.profile, ...profileData }
-        }))
-      }
+      const updatedProfile = await apiService.updateProfile(profileData)
+      setUser(prev => ({
+        ...prev,
+        profile: updatedProfile
+      }))
     } catch (err) {
       console.error("更新画像失败:", err)
       throw err;
@@ -107,7 +80,7 @@ function App() {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, demoLogin, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, updateUserProfile }}>
       <div className="app">
         {isAuthenticated && <Header />}
         <main className={isAuthenticated ? 'main-content' : ''}>

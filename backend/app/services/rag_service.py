@@ -1,5 +1,9 @@
 import os
 import sys
+
+# 设置 Hugging Face 镜像源以加速模型加载
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+
 import pickle
 import jieba
 import chromadb

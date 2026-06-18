@@ -4,7 +4,7 @@ import { apiService } from '../services/api'
 import './LoginPage.css'
 
 function LoginPage() {
-  const { login, demoLogin } = useContext(AuthContext)
+  const { login } = useContext(AuthContext)
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
@@ -260,22 +260,6 @@ function LoginPage() {
               {isRegister ? '注册' : '登录'}
             </button>
           </form>
-
-          {/* Divider */}
-          <div className="form-or">
-            <span className="or-line" />
-            <span className="or-text">或</span>
-            <span className="or-line" />
-          </div>
-
-          {/* Demo Login */}
-          <button
-            className="btn btn-outline btn-lg form-demo"
-            onClick={demoLogin}
-            id="demo-login-btn"
-          >
-            ✨ 体验模式（免注册）
-          </button>
 
           <p className="form-footer">
             {isRegister ? '已有账号？' : '没有账号？'}
